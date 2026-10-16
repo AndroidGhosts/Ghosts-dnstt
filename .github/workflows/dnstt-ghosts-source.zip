@@ -1,0 +1,27 @@
+name: Unzip Source Code
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # يتيح لك تشغيله يدوياً من تبويب Actions
+
+permissions:
+  contents: write # هذا السطر هو الأهم، يعطي الصلاحية للكتابة
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unzip files
+        run: |
+          unzip dnstt-ghosts-source.zip
+          rm dnstt-ghosts-source.zip
+          
+      - name: Commit and Push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Auto Unzipped Files [skip ci]"
+          git push
